@@ -422,14 +422,17 @@ public class CaptureActivity extends Activity implements
     }
 
     private int getStatusBarHeight() {
-        try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
-            Object obj = c.newInstance();
-            Field field = c.getField("status_bar_height");
-            int x = Integer.parseInt(field.get(obj).toString());
-            return getResources().getDimensionPixelSize(x);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int v = this.getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        if (v != WindowManager.LayoutParams.FLAG_FULLSCREEN) {
+            try {
+                Class<?> c = Class.forName("com.android.internal.R$dimen");
+                Object obj = c.newInstance();
+                Field field = c.getField("status_bar_height");
+                int x = Integer.parseInt(field.get(obj).toString());
+                return getResources().getDimensionPixelSize(x);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return 0;
     }
